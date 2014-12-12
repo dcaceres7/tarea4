@@ -43,7 +43,7 @@ public class PersonajeAnimado3 extends Actor{
 	  velocidad_y+=aceleracion_y;
 	  this.setY(this.getY()+velocidad_y);
 	  //Gravedad
-	  aceleracion_y-=0.10;
+	  aceleracion_y-=0.15;
 	  //caigo en el piso
 	  if(this.getY()<=70){
 		  velocidad_y=0;
@@ -53,8 +53,12 @@ public class PersonajeAnimado3 extends Actor{
 	  super.act(delta);
   }
   
+  //if(=70 o <300)
   public void saltar(){
-	  aceleracion_y=2;
+	  if(this.getY()==70||this.getY()<300){
+		  aceleracion_y =2.5f;
+		  }
+	  //aceleracion_y=2;
   }
   
   public void draw(Batch batch,float parentAlpha){

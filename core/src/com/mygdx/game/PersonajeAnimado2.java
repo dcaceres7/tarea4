@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -10,6 +11,8 @@ public class PersonajeAnimado2 extends Actor{
 	PersonajeAnimado3 p;
 	ArrayList<Image> imag;
 	int dibujo_actual=0;
+	static int contadorColision=0,contadorVelocidad=0;
+
 	float llamadas_act=0;
 	
   public PersonajeAnimado2(PersonajeAnimado3 p){
@@ -24,7 +27,14 @@ public class PersonajeAnimado2 extends Actor{
 	  this.setX(800);
 	  this.setY(100);
   }
-  
+
+	public static void setContadorColision(int contadorColision) {
+		PersonajeAnimado2.contadorColision = contadorColision;
+	}
+	public static void setContadorVelocidad(int contadorVelocidad){
+		PersonajeAnimado2.contadorVelocidad=contadorVelocidad;
+	}
+	
   @Override
   public void act(float delta){
 	  super.act(delta);
@@ -40,18 +50,15 @@ public class PersonajeAnimado2 extends Actor{
 		  dibujo_actual=0;
 	  }
 		 
-			if(this.getX()<p.getX()+50
-			&& this.getX()+50>p.getX()
-			&& this.getY()<p.getY()+50
-			&& this.getY()+50>p.getY()){
-		System.out.println("Colision!");
-		imag.add(new Image(new Texture ("over.png")));
-			}
-	  
-	  
-//	  this.setX(this.getX()+2);
-//	  this.setY(this.getY()+2);
-	  //llamadas_act++;
+	  Rectangle r1=new Rectangle(this.getX(), this.getY(), 100, 100);
+	  Rectangle r2=new Rectangle(p.getX(), p.getY(), 100, 100);
+		if(r1.overlaps(r2)){
+		 System.out.println("Colision!");
+		 contadorColision+=1;
+		}else
+	     contadorVelocidad+=1;
+		if(contadorVelocidad>1000)
+		this.setX(this.getX()-delta*280);
   }
   
   public void draw(Batch batch,float parentAlpha){
@@ -60,4 +67,5 @@ public class PersonajeAnimado2 extends Actor{
 	  imag.get(dibujo_actual).setX(this.getX());
 	  imag.get(dibujo_actual).draw(batch, parentAlpha);
   }
+  
 }
